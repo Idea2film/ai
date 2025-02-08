@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Капсула времени</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ff9800; /* Оранжевый фон */
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background-color: #fff;
+            padding: 20px 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+        h1 {
+            color: #333;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        h1 .loader {
+            margin-left: 10px;
+        }
+        textarea {
+            width: 100%;
+            height: 100px;
+            margin: 15px 0;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            resize: none;
+        }
+        button {
+            background-color: #5bc0de;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #2a6496;
+        }
+        button:focus {
+            outline: none;
+            box-shadow: 0 0 5px rgba(88, 173, 88, 0.8);
+        }
+        .message {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #e9ecef;
+            border-radius: 5px;
+            display: none;
+        }
+        .success-symbol {
+            font-size: 40px;
+            color: #28a745;
+            margin-top: 10px;
+        }
+        .loader {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #5bc0de;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            animation: spin 1s linear infinite;
+            display: none;
+        }
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>
+            Капсула времени
+            <div class="loader" id="loader"></div>
+        </h1>
+        <p id="instruction">Введите сообщение, которое хотите сохранить:</p>
+        <textarea id="timeCapsuleMessage" placeholder="Ваше сообщение..." oninput="showLoader()"></textarea>
+        <button id="submitButton" onmouseover="this.style.backgroundColor='#2a6496'" onmouseout="this.style.backgroundColor='#5bc0de'" onclick="saveMessage()">Запечатать капсулу</button>
+        <div id="savedMessage" class="message">
+            <strong>Сообщение из капсулы времени, отправленное из прошлого:</strong>
+            <p id="capsuleContent"></p>
+            <div class="success-symbol">✔️</div>
+            <button id="resetButton" onclick="resetForm()" style="margin-top: 15px;">Снова</button>
+        </div>
+    </div>
+
+    <script>
+        function saveMessage() {
+            const message = document.getElementById('timeCapsuleMessage').value;
+            if (message.trim() === "") {
+                alert("Пожалуйста, введите сообщение!");
+                return;
+            }
+
+            // Убираем инструкцию, кнопку и поле ввода
+            document.getElementById('instruction').style.display = 'none';
+            document.getElementById('timeCapsuleMessage').style.display = 'none';
+            document.getElementById('submitButton').style.display = 'none';
+
+            document.getElementById('capsuleContent').textContent = message;
+            document.getElementById('savedMessage').style.display = 'block';
+            hideLoader();
+        }
+
+        function showLoader() {
+            document.getElementById('loader').style.display = 'block';
+        }
+
+        function hideLoader() {
+            document.getElementById('loader').style.display = 'none';
+        }
+
+        function resetForm() {
+            // Возвращаем все элементы в исходное состояние
+            document.getElementById('instruction').style.display = 'block';
+            document.getElementById('timeCapsuleMessage').style.display = 'block';
+            document.getElementById('submitButton').style.display = 'inline-block';
+            document.getElementById('timeCapsuleMessage').value = '';
+            document.getElementById('savedMessage').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
