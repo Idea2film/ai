@@ -1,143 +1,306 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Капсула времени</title>
+    <title>Blunder Home Studio</title>
     <style>
+        /* Базовые стили */
         body {
-            font-family: Arial, sans-serif;
-            background-color: #ff9800; /* Оранжевый фон */
             margin: 0;
-            padding: 0;
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
             display: flex;
-            justify-content: center;
-            align-items: center;
-            height: 100vh;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+        header, footer {
+            background-color: #000;
+            color: #fff;
+            text-align: center;
+        }
+        header h1, footer .copyright {
+            font-size: 1.2rem;
+            margin: 10px 0;
+        }
+        header .buttons a, footer .arrows a {
+            text-decoration: none;
+            color: #fff;
+            background-color: #333;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+        header .buttons a.active, footer .arrows a:hover {
+            background-color: #ff6f00;
         }
         .container {
-            background-color: #fff;
-            padding: 20px 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            max-width: 90%;
+            margin: 0 auto;
             text-align: center;
-            max-width: 400px;
-            width: 100%;
-            position: relative;
+            flex-grow: 1;
         }
-        h1 {
-            color: #333;
+        footer {
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            padding: 10px 20px;
+            box-sizing: border-box;
+        }
+        footer .perforation {
+            height: 10px;
+            background-image: linear-gradient(to right, #fff 50%, transparent 50%);
+            background-size: 25px 10px;
+            margin-bottom: 10px;
+        }
+        footer .arrows {
             display: flex;
             align-items: center;
             justify-content: center;
-        }
-        h1 .loader {
-            margin-left: 10px;
-        }
-        textarea {
-            width: 100%;
-            height: 100px;
-            margin: 15px 0;
-            padding: 10px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            resize: none;
-        }
-        button {
-            background-color: #5bc0de;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 16px;
-            transition: background-color 0.3s ease;
-        }
-        button:hover {
-            background-color: #2a6496;
-        }
-        button:focus {
-            outline: none;
-            box-shadow: 0 0 5px rgba(88, 173, 88, 0.8);
-        }
-        .message {
-            margin-top: 20px;
-            padding: 10px;
-            background-color: #e9ecef;
-            border-radius: 5px;
-            display: none;
-        }
-        .success-symbol {
-            font-size: 40px;
-            color: #28a745;
+            gap: 10px;
             margin-top: 10px;
         }
-        .loader {
-            border: 4px solid #f3f3f3;
-            border-top: 4px solid #5bc0de;
+        footer .language-switcher, footer .signal-icon {
+            width: 40px;
+            height: 40px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+        }
+        footer .language-switcher {
+            background-color: #fff;
             border-radius: 50%;
-            width: 20px;
-            height: 20px;
+            color: #000;
+        }
+        footer .language-switcher:hover {
+            background-color: #ff6f00;
+            color: #fff;
+        }
+        footer .signal-icon::before, footer .signal-icon::after {
+            content: '';
+            position: absolute;
+            width: 4px;
+            height: 16px;
+            background-color: #fff;
+            border-radius: 2px;
+        }
+        footer .signal-icon::before { transform: translateX(-6px); }
+        footer .signal-icon::after { transform: translateX(6px); }
+        footer .signal-icon:hover {
+            background-color: red;
+            border-radius: 50%;
+        }
+        footer .signal-icon:hover::before, footer .signal-icon:hover::after {
+            content: none;
+        }
+        .loading-spinner {
+            display: inline-block;
+            width: 50px;
+            height: 50px;
+            border: 5px solid #ccc;
+            border-top-color: #ff6f00;
+            border-radius: 50%;
             animation: spin 1s linear infinite;
-            display: none;
         }
         @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
+            to { transform: rotate(360deg); }
+        }
+        @media (max-width: 600px) {
+            header h1 { font-size: 1rem; }
+            header .buttons a { font-size: 0.9rem; padding: 8px 16px; }
         }
     </style>
 </head>
 <body>
-    <div class="container">
-        <h1>
-            Капсула времени
-            <div class="loader" id="loader"></div>
-        </h1>
-        <p id="instruction">Введите сообщение, которое хотите сохранить:</p>
-        <textarea id="timeCapsuleMessage" placeholder="Ваше сообщение..." oninput="showLoader()"></textarea>
-        <button id="submitButton" onmouseover="this.style.backgroundColor='#2a6496'" onmouseout="this.style.backgroundColor='#5bc0de'" onclick="saveMessage()">Запечатать капсулу</button>
-        <div id="savedMessage" class="message">
-            <strong>Сообщение из капсулы времени, отправленное из прошлого:</strong>
-            <p id="capsuleContent"></p>
-            <div class="success-symbol">✔️</div>
-            <button id="resetButton" onclick="resetForm()" style="margin-top: 15px;">Снова</button>
+    <!-- Хедер -->
+    <header>
+        <h1 id="headerTitle">Blunder Home Studio</h1>
+        <div class="buttons">
+            <a href="#" id="homeButton" class="active">Home</a>
+            <a href="#" id="aboutButton">About</a>
+            <a href="#" id="contactButton">Contacts</a>
         </div>
-    </div>
+    </header>
+
+    <!-- Основная часть -->
+    <main class="container">
+        <h1 id="mainHeading">Opening soon!</h1>
+        <p id="mainContent">Coming soon! <br> Незабаром відкриття! <br> בקרוב יפתח!</p>
+        <div class="loading-spinner"></div>
+    </main>
+
+    <!-- Футер -->
+    <footer>
+        <div class="perforation"></div>
+        <div class="arrows">
+            <a href="#" id="leftArrow">&#9664;</a>
+            <div class="language-switcher" id="languageSwitcher">eng</div>
+            <div class="signal-icon"></div>
+            <a href="#" id="rightArrow">&#9654;</a>
+        </div>
+        <div class="copyright" id="copyrightText">
+            © <span id="currentYear"></span> All rights reserved
+        </div>
+    </footer>
 
     <script>
-        function saveMessage() {
-            const message = document.getElementById('timeCapsuleMessage').value;
-            if (message.trim() === "") {
-                alert("Пожалуйста, введите сообщение!");
-                return;
+        // Инициализация текущего года
+        document.getElementById('currentYear').textContent = new Date().getFullYear();
+
+        // Переводы
+        const translations = {
+            rus: {
+                menu: ['Главная', 'О нас', 'Контакты'],
+                copyright: 'Все права защищены',
+                home: {
+                    heading: 'Скоро открытие!',
+                    content: 'Coming soon! <br> Незабаром відкриття! <br> בקרוב יפתח!'
+                },
+                about: {
+                    heading: 'О нас',
+                    content: 'Домашняя студия Ляпсуса - первая студия кинокомпании "Идеяфильм", открытая в Москве в 2003 году. Она занималась производством авторских и любительских фильмов вплоть до 2009 года. Затем большая часть оборудования была передана "Студии детского кино", которая работала на базе школ 1020, 1107, 109 до 2022 года. В 2024 году "Домашняя студия Ляпсуса" открылась снова в Хайфе. И снова занимается производством авторских фильмов.'
+                },
+                contact: {
+                    heading: 'Контакты',
+                    content: 'Студия находится в Израиле. Мы ждём вас в Хайфе. Пожалуйста, напишите нам: ideafilm@tutamail.com'
+                }
+            },
+            eng: {
+                menu: ['Home', 'About', 'Contacts'],
+                copyright: 'All rights reserved',
+                home: {
+                    heading: 'Opening soon!',
+                    content: 'Coming soon! <br> Незабаром відкриття! <br> בקרוב יפתח!'
+                },
+                about: {
+                    heading: 'About us',
+                    content: 'Blunder Home Studio is the first studio of the "IdeaFilm" company, opened in Moscow in 2003. It was engaged in the production of authorial and amateur films until 2009. Then most of the equipment was transferred to the "Children\'s Film Studio," which operated at schools 1020, 1107, and 109 until 2022. In 2024, "Blunder Home Studio" reopened in Haifa and continues producing authorial films.'
+                },
+                contact: {
+                    heading: 'Contacts',
+                    content: 'The studio is located in Israel. We are waiting for you in Haifa. Please write to us: ideafilm@tutamail.com'
+                }
+            },
+            ukr: {
+                menu: ['Головна', 'Про нас', 'Контакти'],
+                copyright: 'Всі права захищені',
+                home: {
+                    heading: 'Незабаром відкриття!',
+                    content: 'Coming soon! <br> Незабаром відкриття! <br> בקרוב יפתח!'
+                },
+                about: {
+                    heading: 'Про нас',
+                    content: 'Домашня студія Ляпсуса - перша студія кінокомпанії "Ідеяфільм", відкрита в Москві у 2003 році. Вона займалася виробництвом авторських і любительських фільмів аж до 2009 року. Потім більша частина обладнання була передана "Студії дитячого кіно", яка працювала на базі шкіл 1020, 1107, 109 до 2022 року. У 2024 році "Домашня студія Ляпсуса" знову відкрилася в Хайфі. І знову займається виробництвом авторських фільмів.'
+                },
+                contact: {
+                    heading: 'Контакти',
+                    content: 'Студія знаходиться в Ізраїлі. Ми чекаємо вас у Хайфі. Будь ласка, напишіть нам: ideafilm@tutamail.com'
+                }
+            },
+            heb: {
+                menu: ['בית', 'עלינו', 'אנשי קשר'],
+                copyright: 'כל הזכויות שמורות',
+                home: {
+                    heading: 'בקרוב יפתח!',
+                    content: 'Coming soon! <br> נזabarom vidkrittya! <br> בקרוב יפתח!'
+                },
+                about: {
+                    heading: 'עלינו',
+                    content: 'סטודיו ביתית של טעות היא הסטודיו הראשון של חברת הסרטים "אידיאה פילם", שנפתח במוסקבה בשנת 2003. היא עסקה בייצור סרטים אוטוריים ולא מקצוענים עד שנת 2009. לאחר מכן, רוב הציוד הועבר ל"סטודיו קולנוע ילדים", שפעל בבתי הספר 1020, 1107 ו-109 עד שנת 2022. בשנת 2024, "סטודיו ביתית של טעות" נפתח שוב בחיפה. והיא ממשיכה לייצר סרטים אוטוריים.'
+                },
+                contact: {
+                    heading: 'אנשי קשר',
+                    content: 'הסטודיו נמצא בישראל. אנו מחכים לכם בחיפה. אנא כתבו לנו: ideafilm@tutamail.com'
+                }
             }
+        };
 
-            // Убираем инструкцию, кнопку и поле ввода
-            document.getElementById('instruction').style.display = 'none';
-            document.getElementById('timeCapsuleMessage').style.display = 'none';
-            document.getElementById('submitButton').style.display = 'none';
+        let currentLanguageIndex = 0; // Индекс языка по умолчанию
+        const languages = ['eng', 'rus', 'ukr', 'heb']; // Порядок языков
+        const buttons = [
+            document.getElementById('homeButton'),
+            document.getElementById('aboutButton'),
+            document.getElementById('contactButton')
+        ];
 
-            document.getElementById('capsuleContent').textContent = message;
-            document.getElementById('savedMessage').style.display = 'block';
-            hideLoader();
+        // Обновление интерфейса
+        function updateLanguage() {
+            const lang = languages[currentLanguageIndex];
+            const { menu, copyright } = translations[lang];
+
+            // Заголовок в хедере остаётся неизменным
+            document.getElementById('headerTitle').textContent = 'Blunder Home Studio';
+
+            // Обновляем тексты кнопок и футера
+            buttons.forEach((button, i) => button.textContent = menu[i]);
+            document.getElementById('copyrightText').textContent = `© ${new Date().getFullYear()} ${copyright}`;
+            document.getElementById('languageSwitcher').textContent = lang;
+
+            // Обновляем содержимое страницы
+            updatePageContent();
         }
 
-        function showLoader() {
-            document.getElementById('loader').style.display = 'block';
+        // Обновление содержимого страницы
+        function updatePageContent() {
+            const lang = languages[currentLanguageIndex];
+            const activeButton = buttons.findIndex(button => button.classList.contains('active'));
+
+            if (activeButton === 0) {
+                // Главная страница
+                document.getElementById('mainHeading').textContent = translations[lang].home.heading;
+                document.getElementById('mainContent').innerHTML = translations[lang].home.content;
+            } else if (activeButton === 1) {
+                // Страница "О нас"
+                document.getElementById('mainHeading').textContent = translations[lang].about.heading;
+                document.getElementById('mainContent').innerHTML = translations[lang].about.content;
+            } else if (activeButton === 2) {
+                // Страница "Контакты"
+                document.getElementById('mainHeading').textContent = translations[lang].contact.heading;
+                document.getElementById('mainContent').innerHTML = translations[lang].contact.content;
+            }
         }
 
-        function hideLoader() {
-            document.getElementById('loader').style.display = 'none';
+        // Слушатели событий для кнопок
+        buttons.forEach((button, index) => {
+            button.addEventListener('click', (e) => {
+                e.preventDefault(); // Предотвращаем стандартное поведение ссылки
+                setActiveButton(index);
+                updatePageContent();
+            });
+        });
+
+        // Активная кнопка
+        function setActiveButton(index) {
+            buttons.forEach((button, i) => button.classList.toggle('active', i === index));
         }
 
-        function resetForm() {
-            // Возвращаем все элементы в исходное состояние
-            document.getElementById('instruction').style.display = 'block';
-            document.getElementById('timeCapsuleMessage').style.display = 'block';
-            document.getElementById('submitButton').style.display = 'inline-block';
-            document.getElementById('timeCapsuleMessage').value = '';
-            document.getElementById('savedMessage').style.display = 'none';
-        }
+        // Глобальная переменная для текущего индекса активной кнопки
+        let currentIndex = 0;
+
+        // Слушатели событий для стрелок
+        document.getElementById('leftArrow').addEventListener('click', () => {
+            currentIndex = (currentIndex - 1 + buttons.length) % buttons.length;
+            setActiveButton(currentIndex);
+            updatePageContent();
+        });
+
+        document.getElementById('rightArrow').addEventListener('click', () => {
+            currentIndex = (currentIndex + 1) % buttons.length;
+            setActiveButton(currentIndex);
+            updatePageContent();
+        });
+
+        // Переключение языков
+        document.getElementById('languageSwitcher').addEventListener('click', () => {
+            currentLanguageIndex = (currentLanguageIndex + 1) % languages.length;
+            updateLanguage();
+        });
+
+        // Инициализация
+        updateLanguage();
+        setActiveButton(0);
     </script>
 </body>
 </html>
