@@ -146,20 +146,18 @@
     <script src="horizontal.js" id="horizontal-script"></script>
     <script src="vertical.js" id="vertical-script"></script>
 
-    <!-- JavaScript для смены дизайна -->
+<!-- JavaScript для смены дизайна -->
     <script>
-        function changeDesign(design) {
+        let designIndex = 0;
+        const designs = ['default-design', 'white-design', 'dark-design'];
+
+        function cycleDesign() {
+            designIndex = (designIndex + 1) % designs.length;
             const body = document.body;
             // Убираем все классы дизайна
             body.classList.remove('default-design', 'white-design', 'dark-design');
-            // Добавляем выбранный класс
-            if (design === 'white') {
-                body.classList.add('white-design');
-            } else if (design === 'dark') {
-                body.classList.add('dark-design');
-            } else {
-                body.classList.add('default-design');
-            }
+            // Добавляем следующий класс дизайна
+            body.classList.add(designs[designIndex]);
         }
     </script>
 </body>
