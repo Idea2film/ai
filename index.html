@@ -1,77 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Информация о языках -->
+    <link rel="alternate" hreflang="en" href="index.html" />
+    <link rel="alternate" hreflang="ru" href="index-ru.html" />
+    <link rel="alternate" hreflang="uk" href="index-uk.html" />
+    <link rel="alternate" hreflang="he" href="index-he.html" />
+
+    <!-- SEO и мета теги для соцсетей -->
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SEO description for English version">
-    <meta name="og:title" content="Page Title for Social Media">
-    <meta name="og:description" content="Description for Social Media">
-    <title>Responsive Page</title>
-    <link rel="stylesheet" href="styles.css">
+    <meta name="description" content="A responsive website with adaptive design for different screen orientations.">
+    <meta property="og:title" content="Responsive Website">
+    <meta property="og:description" content="A website that adapts to horizontal and vertical screen orientations.">
+    <meta property="og:image" content="https://example.com/social-image.jpg">
+    <meta property="og:url" content="https://example.com/index.html">
+
+    <!-- Заголовок страницы -->
+    <title>Responsive Website</title>
+
+    <!-- Стиль по умолчанию -->
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            text-align: center;
+            background-color: #f4f4f4;
+            padding: 10px 20px;
+        }
+        header .page-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        header .menu-row {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+        }
+        header .menu-row a {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            text-decoration: none;
+            color: #000;
+            background-color: #ddd;
+            border: none;
+            border-radius: 5px;
+        }
+        header .menu-row a:hover {
+            background-color: #bbb;
+        }
+        header select {
+            padding: 10px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ddd;
+        }
+        header select:hover {
+            background-color: #bbb;
+        }
+        header button#design-switcher {
+            padding: 10px 15px;
+            font-size: 14px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #ddd;
+        }
+        header button#design-switcher:hover {
+            background-color: #bbb;
+        }
+        footer, #jason {
+            background-color: #f4f4f4;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
 </head>
 <body>
     <!-- Header -->
     <header>
-        <h1>Website Title</h1>
-        <nav>
-            <button onclick="switchSection(1)">Section 1</button>
-            <button onclick="switchSection(2)">Section 2</button>
-            <button onclick="switchSection(3)">Section 3</button>
-            <button onclick="switchLanguage('en')">EN</button>
-            <button onclick="switchLanguage('ru')">RU</button>
-            <button onclick="switchLanguage('uk')">UK</button>
-            <button onclick="switchLanguage('he')">HE</button>
-        </nav>
+        <!-- Название страницы -->
+        <div class="page-title">One-Shot Movie</div>
+
+        <!-- Вторая строка: меню, переключение языков и дизайна -->
+        <div class="menu-row">
+            <!-- Меню -->
+            <a href="home.html">Home</a>
+            <a href="rules.html">Rules</a>
+            <a href="join.html">Join</a>
+
+            <!-- Переключение языков -->
+            <select onchange="location = this.value;">
+                <option value="index.html">EN</option>
+                <option value="index-ru.html">RU</option>
+                <option value="index-uk.html">UK</option>
+                <option value="index-he.html">HE</option>
+            </select>
+
+            <!-- Переключение дизайна -->
+            <select id="design-switcher" onchange="changeDesign(this.value)">
+                <option value="default">Default Design</option>
+                <option value="white">White Design</option>
+                <option value="dark">Dark Design</option>
+            </select>
+        </div>
     </header>
-    
-    <!-- Body Sections -->
-    <main>
-        <section id="section1">
-            <h2>Section 1</h2>
-            <p>Content for section 1.</p>
-        </section>
-        <section id="section2">
-            <h2>Section 2</h2>
-            <p>Content for section 2.</p>
-        </section>
-        <section id="section3">
-            <h2>Section 3</h2>
-            <p>Content for section 3.</p>
-        </section>
-    </main>
-    
-    <!-- JSON Area -->
-    <aside id="jsonArea">
-        <button onclick="scrollJson('up')">▲</button>
-        <button onclick="scrollJson('down')">▼</button>
-        <button onclick="changeDesign()">⚙</button>
-        <p>JSON content here</p>
-    </aside>
-    
-    <!-- Footer -->
-    <footer id="footer">
-        <button onclick="prevSection()">◄</button>
-        <button onclick="nextSection()">►</button>
-        <button onclick="changeDesign()">⚙</button>
+
+    <!-- Body Section 1 -->
+    <div class="body-section" id="section1">
+        <h1>Section 1</h1>
+        <p>This is the first section of the body.</p>
+    </div>
+
+    <!-- Body Section 2 -->
+    <div class="body-section hidden" id="section2">
+        <h1>Section 2</h1>
+        <p>This is the second section of the body.</p>
+    </div>
+
+    <!-- Body Section 3 -->
+    <div class="body-section hidden" id="section3">
+        <h1>Section 3</h1>
+        <p>This is the third section of the body.</p>
+    </div>
+
+    <!-- Jason (for horizontal screens) -->
+    <div id="jason" class="hidden">
+        <button id="jason-up">▲</button>
+        <button id="jason-down">▼</button>
+    </div>
+
+    <!-- Footer (for vertical screens) -->
+    <footer class="hidden">
+        <button id="footer-left">◀</button>
+        <button id="footer-right">▶</button>
     </footer>
-    
-    <!-- JavaScript -->
-    <script src="horizontal.js"></script>
-    <script src="vertical.js"></script>
+
+    <!-- JavaScript files -->
+    <script src="horizontal.js" id="horizontal-script"></script>
+    <script src="vertical.js" id="vertical-script"></script>
+
+    <!-- JavaScript для смены дизайна -->
     <script>
-        function switchLanguage(lang) {
-            switch(lang) {
-                case 'ru':
-                    window.location.href = 'index-ru.html';
-                    break;
-                case 'uk':
-                    window.location.href = 'index-uk.html';
-                    break;
-                case 'he':
-                    window.location.href = 'index-he.html';
-                    break;
-                default:
-                    window.location.href = 'index.html';
+        function changeDesign(design) {
+            const body = document.body;
+            // Убираем все классы дизайна
+            body.classList.remove('default-design', 'white-design', 'dark-design');
+            // Добавляем выбранный класс
+            if (design === 'white') {
+                body.classList.add('white-design');
+            } else if (design === 'dark') {
+                body.classList.add('dark-design');
+            } else {
+                body.classList.add('default-design');
             }
         }
     </script>
