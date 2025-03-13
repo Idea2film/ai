@@ -65,15 +65,15 @@
         header select:hover {
             background-color: #bbb;
         }
-        header button#design-switcher {
+        header .design-switcher {
             padding: 10px 15px;
             font-size: 14px;
             cursor: pointer;
             border: none;
-            border-radius: 5px;
+            border-radius: 50%;
             background-color: #ddd;
         }
-        header button#design-switcher:hover {
+        header .design-switcher:hover {
             background-color: #bbb;
         }
         footer, #jason {
@@ -106,11 +106,9 @@
             </select>
 
             <!-- Переключение дизайна -->
-            <select id="design-switcher" onchange="changeDesign(this.value)">
-                <option value="default">Default Design</option>
-                <option value="white">White Design</option>
-                <option value="dark">Dark Design</option>
-            </select>
+            <button class="design-switcher" onclick="changeDesign('default')">D</button>
+            <button class="design-switcher" onclick="changeDesign('white')">W</button>
+            <button class="design-switcher" onclick="changeDesign('dark')">B</button>
         </div>
     </header>
 
